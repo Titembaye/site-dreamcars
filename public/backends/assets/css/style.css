@@ -1,0 +1,70 @@
+.btn-icon {
+    border: none; /* Supprime la bordure */
+    padding: 0; /* Supprime la marge intérieure */
+    cursor: pointer; /* Change le curseur pour indiquer qu'il s'agit d'un lien cliquable */
+    font-size: inherit; /* Utilisez la taille de police par défaut */
+}
+/* CSS personnalisé pour rendre les boutons circulaires */
+.btn-circle {
+    border-radius: 250%; /* Utilise la bordure arrondie pour créer une forme circulaire */
+    width: 26px; /* Ajustez la largeur du bouton en fonction de vos besoins */
+    height: 26px; /* Ajustez la hauteur du bouton en fonction de vos besoins */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Pour ajuster les couleurs des boutons circulaires */
+.btn-primary.btn-circle {
+    background-color: #007bff; /* Couleur bleue pour le bouton "Détail" */
+    color: #fff; /* Couleur du texte en blanc */
+    margin-right: 2px;
+}
+
+.btn-success.btn-circle {
+    background-color: #28a745; /* Couleur verte pour le bouton "Modifier" */
+    color: #fff; /* Couleur du texte en blanc */
+    margin-right: 2px;
+}
+
+.btn-danger.btn-circle {
+    background-color: #dc3545; /* Couleur rouge pour le bouton "Supprimer" */
+    color: #fff; /* Couleur du texte en blanc */
+}
+
+.same-line {
+    display: flex;
+    align-items: center;
+}
+
+/* Réduire la taille de la barre de recherche */
+.dataTables_filter input {
+    width: 150px; /* Ajustez la largeur en fonction de vos besoins */
+    height: 30px; /* Ajustez la hauteur en fonction de vos besoins */
+}
+
+/* Réduire la taille de l'option select */
+.dataTables_length select {
+    width: 100px; /* Ajustez la largeur en fonction de vos besoins */
+    height: 30px; /* Ajustez la hauteur en fonction de vos besoins */
+}
+
+.table td, .table th {
+    padding: 0.25rem 0.5rem; /* Ajustez le rembourrage pour réduire la hauteur des cellules */
+}
+
+/* CSS personnalisé pour ajuster la taille des boutons de pagination */
+.pagination .page-link {
+    padding: 0.25rem 0.5rem; /* Ajustez le rembourrage pour réduire la hauteur et la largeur des boutons de pagination */
+    font-size: 14px; /* Ajustez la taille de la police des boutons de pagination */
+}
+
+/* Si nécessaire, ajustez la taille des flèches "Previous" et "Next" */
+.pagination .page-link[aria-label="Previous"], .pagination .page-link[aria-label="Next"] {
+    font-size: 14px; /* Ajustez la taille de la police des flèches "Previous" et "Next" */
+}
+
+.form-control-custom::placeholder {
+    color: #fff; /* Couleur du texte du placeholder */
+    font-style: italic; /* Style du texte du placeholder, par exemple italique */
+}

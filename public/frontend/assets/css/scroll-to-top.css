@@ -1,0 +1,40 @@
+
+  .btn-scroll-to-top {
+    position: fixed;
+    bottom: 30px; /* Ajustez la valeur en conséquence pour déterminer la distance depuis le bas */
+    right: 20px; /* Ajustez la valeur en conséquence pour déterminer la distance depuis la droite */
+    display: none;
+    color: white;
+    background-color: #e42320;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+
+.animated-title , .text-title{
+  color: #f1f0fe;
+  transition: transform 0.5s ease-out;
+}
+
+.animated-title:hover {
+  transform: scale(1.2) perspective(400px);
+}
+.text-title:hover{
+  transform: translateX(30px);
+}
+.rotate-title{
+  color: #e42320;
+  font-style: italic;
+  text-decoration: underline;
+  transition: transform 0.8s ease-out;
+}
+
+.rotate-title:hover{
+  transform: rotate(360deg);
+}
+
