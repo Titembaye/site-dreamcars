@@ -17,11 +17,8 @@
                     <div class="col-md-4 text-right" style="text-align: right;">
                         <form action="{{ route('reservations.index') }}" method="GET" class="search-form">
                             <div class="input-group">
-                                <div class="input-group-text">
-                                    <i data-feather="search"></i>
-                                </div>
                                 <input type="text" class="form-control" name="query" placeholder="Rechercher...">
-                                <button type="submit" class="btn btn-primary">Rechercher</button>
+                                <button type="submit" class="btn btn-primary btn-sm">Rechercher</button>
                             </div>
                         </form>
                     </div>
@@ -53,15 +50,34 @@
                                     <a href="{{ route('reservations.edit', $reservation->id) }}" class="btn btn-success btn-circle btn-sm">
                                         <i class="mdi mdi-pencil"></i>
                                     </a>
-                                    <form action="{{ route('reservations.destroy', $reservation->id) }} " method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-circle btn-sm">
-                                            
+                                    <!-- Bouton de suppression avec modèle de confirmation -->
+                                    <button type="button" class="btn btn-danger btn-circle btn-sm delete-facture-btn" data-reservation-id="{{ $reservation->id }}" data-bs-toggle="modal" data-bs-target="#deleteModal">
                                         <i class="mdi mdi-delete"></i>
-                                                                        
-                                        </button>
-                                    </form>
+                                    </button>
+                                
+                                    <!-- Modèle de confirmation de suppression -->
+                                    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="deleteModalLabel">Confirmation de suppression</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Êtes-vous sûr de vouloir supprimer cette réservation ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                                    <!-- Formulaire de suppression -->
+                                                    <form id="deleteReservationForm" action="{{ route('reservations.destroy', $reservation->id) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                             @endforeach 
@@ -114,4 +130,14 @@
     </div>
 </div>
     
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Gérer la soumission du formulaire de suppression lorsque le modèle est confirmé
+        $('.delete-reservation-btn').on('click', function () {
+            var reservationId = $(this).data('reservation-id');
+            // Mettre à jour l'action du formulaire avec l'ID de la facture à supprimer
+            $('#deleteReservationForm').attr('action', '{{ route('reservations.destroy', '') }}/' + reservationId);
+        });
+    });
+</script>
 @endsection

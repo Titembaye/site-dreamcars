@@ -41,7 +41,7 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-                    <button type="submit" class="btn btn-primary me-2">Submit</button>
+                    <button type="submit" class="btn btn-primary me-2">Enregistrer</button>
                     <a href="{{route('disponibilites.index')}}" class="btn btn-secondary">Cancel</a>
                 </form>
             </div>

@@ -8,6 +8,7 @@ use App\Http\Controllers\ChauffeurController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PayerController;
+use App\Http\Controllers\FactureController;
 
 
 use App\Models\Reservation;
@@ -79,9 +80,19 @@ Route::resource('agences', 'App\Http\Controllers\AgenceController');
 Route::resource('disponibilites', 'App\Http\Controllers\DisponibiliteVoitureController');
 Route::resource('missions', 'App\Http\Controllers\MissionController');
 Route::resource('voitures', 'App\Http\Controllers\VoitureController');
+Route::resource('factures', 'App\Http\Controllers\FactureController')->parameters([
+    'factures' => 'facture', // utilisé 'facture' au lieu de 'facture_id'
+])->where([
+    'facture' => '[A-Za-z0-9]+', // contrainte pour accepter uniquement les caractères alphanumériques
+]);
+Route::get('/generer-facture', [App\Http\Controllers\FactureController::class, 'genererFacture']);
+Route::get('/search-reservations', 'App\Http\Controllers\FactureController@searchReservations')->name('search.reservations');
+
+
+
 Route::middleware(['auth'])->group(function(){
-    Route::resource('reservations', 'App\Http\Controllers\ReservationController');
-    Route::post('/reservations/store_reseravtion', [App\Http\Controllers\ReservationController::class, 'reservation_store'])->name('reservations.reservation_store');
+Route::resource('reservations', 'App\Http\Controllers\ReservationController');
+Route::post('/reservations/store_reseravtion', [App\Http\Controllers\ReservationController::class, 'reservation_store'])->name('reservations.reservation_store');
     
 });
 
@@ -114,6 +125,13 @@ Route::get('/contact', function() {
 
 Route::get('/reservation-success', [FrontendController::class, 'showReservationSuccess'])->name('frontend.reservation_success');
 Route::get('/reservation-abort', [FrontendController::class, 'showReservationAbort'])->name('frontend.reservation_abort');
+Route::get('/factures/{facture}/pdf', 'App\Http\Controllers\FactureController@generatePDF')->name('factures.pdf');
+
+
+
+
+//Route::get('/create_facture', [FactureController::class, 'create'])->name('factures.create');
+//Route::post('/facture_store', [FactureController::class, 'store'])->name('factures.store');
 
 // paiement routes
 

@@ -6,13 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
     public function up()
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
+            $table->string('reservation_id');
+            $table->index('reservation_id');
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('voiture_id')->constrained('voitures');
             $table->date('date_debut');

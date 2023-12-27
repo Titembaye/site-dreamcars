@@ -25,8 +25,8 @@
                 <label for="phone" class="form-label">Téléphone</label>
                 <input type="text" name="phone" class="form-control" id="phone" autocomplete="off" placeholder="Téléphone">
             </div>
-            <button type="submit" class="btn btn-primary me-2">Submit</button>
-            <button class="btn btn-secondary">Cancel</button>
+            <button type="submit" class="btn btn-primary me-2">Enregistrer</button>
+            <a class="btn btn-secondary" href={{route('agences.index')}}>Annuler</a>
         </form>
     </div>
 </div>

@@ -8,17 +8,18 @@
         <div class="card">
             <div class="card-body">
                 <h6 class="card-title">Liste des chauffeurs</h6>
-                <div class="row justify-content-between">
-                    <div class="col-md-6">
+                <div class="row justify-content between">
+                    <div class="col-md-8">
                         <a class="btn btn-primary btn-sm" href="{{route('chauffeurs.create')}}">Ajouter</a>
                     </div>
-                
-                    <div class="col-md-6 text-right" style="text-align: right;">
-                        <div id="dataTableExample_filter" class="dataTables_filter">
-                            <label>
-                                <input type="search" class="form-control" placeholder="Search" aria-controls="dataTableExample">
-                            </label>
-                        </div>
+                    
+                    <div class="col-md-4 text-right" style="text-align: right;">
+                        <form action="{{ route('chauffeurs.index') }}" method="GET" class="search-form">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="search" value="{{ $search }}" placeholder="Rechercher...">
+                                <button type="submit" class="btn btn-primary btn-sm">Rechercher</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <div class="table-responsive" style="margin-top: 20px">
@@ -48,15 +49,33 @@
                                     <a href="{{ route('chauffeurs.edit', $chauffeur->id) }}" class="btn btn-success btn-circle btn-sm">
                                         <i class="mdi mdi-pencil"></i>
                                     </a>
-                                    <form action="{{ route('chauffeurs.destroy', $chauffeur->id) }} " method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-circle btn-sm">
-                                            
+                                    <button type="button" class="btn btn-danger btn-circle btn-sm delete-chauffeur-btn" data-chauffeur-id="{{ $chauffeur->id }}" data-bs-toggle="modal" data-bs-target="#deleteModal">
                                         <i class="mdi mdi-delete"></i>
-                                                                        
-                                        </button>
-                                    </form>
+                                    </button>
+                                
+                                    <!-- Modèle de confirmation de suppression -->
+                                    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="deleteModalLabel">Confirmation de suppression</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Êtes-vous sûr de vouloir supprimer ce chauffeur? ?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                                    <!-- Formulaire de suppression -->
+                                                    <form id="deleteChauffeurForm" action="{{ route('chauffeurs.destroy', $chauffeur->id) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                             @endforeach 
@@ -123,6 +142,17 @@
 
         // Sélectionner la valeur dans la liste déroulante
         entriesPerPageSelect.value = entriesPerPageValue;
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Gérer la soumission du formulaire de suppression lorsque le modèle est confirmé
+        $('.delete-chauffeur-btn').on('click', function () {
+            var chauffeurId = $(this).data('chauffeur-id');
+            // Mettre à jour l'action du formulaire avec l'ID de la facture à supprimer
+            $('#deleteChauffeurForm').attr('action', '{{ route('chauffeurs.destroy', '') }}/' + chauffeurId);
+        });
     });
 </script>
 @endsection

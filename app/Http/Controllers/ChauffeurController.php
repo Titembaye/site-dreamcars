@@ -12,14 +12,31 @@ use App\Models\Agence;
 
 class ChauffeurController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        $chauffeurs = Chauffeur::paginate(10);
-        return view('admin.chauffeurs.index', compact('chauffeurs'));
+    
+
+    public function index(Request $request){
+
+        // Récupérer la requête de recherche depuis la requête
+        $search = $request->input('search');
+
+        // Requête pour obtenir les chauffeurs avec des critères de recherche optionnels
+        $query = Chauffeur::query();
+
+        // Ajouter des conditions à la requête en fonction des critères de recherche
+        if ($search) {
+            $query->where('nom', 'LIKE', '%' . $search . '%')
+                ->orWhere('prenom', 'LIKE', '%' . $search . '%')
+                ->orWhere('phone', 'LIKE', '%' . $search . '%');
+        }
+
+        // Obtenir les résultats paginés
+        $chauffeurs = $query->latest()->paginate(10);
+
+        // Passer la requête de recherche à la vue pour l'afficher dans le champ de recherche
+        return view('admin.chauffeurs.index', compact('chauffeurs', 'search'));
     }
+
+
 
     /**
      * Show the form for creating a new resource
@@ -61,11 +78,15 @@ class ChauffeurController extends Controller
         $chauffeur->email = $request->input('email');
         $chauffeur->agence_id = $request->input('agence_id');
 
+        $notification=array(
+            'message'=>'Chauffeur ajouté avec succès',
+            'alert-type'=>'success'
+        );
         // Enregistrer l'agence dans la base de données
         $chauffeur->save();
 
         // Rediriger vers une page de confirmation ou de liste des agences
-        return redirect()->route('chauffeurs.index')->with('success', 'Le chauffeur a été créée avec succès.');
+        return redirect()->route('chauffeurs.index')->with($notification);
     }
 
     /**

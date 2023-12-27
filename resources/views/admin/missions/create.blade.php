@@ -61,7 +61,7 @@
                             </select>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Créer la Mission</button>
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
                     </form>
                 </div>
             </div>

@@ -13,15 +13,27 @@ use App\Models\StatutVoiture;
 class DisponibiliteVoitureController extends Controller
 {
     // Afficher la liste des disponibilités de voitures
-    public function index(Request $request)
-    {
-        $perPage = $request->input('perPage', 10); // Nombre d'éléments par page, 10 par défaut
+    public function index(Request $request){
+        // Initialize $search with an empty string
+        $search = $request->input('search');
 
-        // Récupérez les données paginées à partir du modèle Agence
-        $disponibilites = DisponibiliteVehicule::paginate($perPage);
+        $query = DisponibiliteVehicule::query();
 
-        return view('admin.disponibilites.index', ['disponibilites' => $disponibilites]);
+        if ($search) {
+            // Assuming there is a relationship between DisponibiliteVehicule and Voiture
+            $query->whereHas('voiture', function ($query) use ($search) {
+                $query->where('immatriculation', 'LIKE', '%' . $search . '%');
+            })
+            ->orWhere('statut', 'LIKE', '%' . $search . '%');
+        }
+
+        // Récupérez les données paginées à partir du modèle DisponibiliteVehicule
+        $disponibilites = $query->latest('created_at')->paginate(10);
+
+        return view('admin.disponibilites.index', ['disponibilites' => $disponibilites, 'search' => $search]);
     }
+
+
 
     // Afficher le formulaire de création de disponibilité de voiture
     public function create()
@@ -87,7 +99,7 @@ class DisponibiliteVoitureController extends Controller
             'alert-type'=>'success'
         );
     
-        return redirect()->route('disponibites.index')->with('success', $notification );
+        return redirect()->route('disponibilites.index')->with('success', $notification );
     }
 }
 

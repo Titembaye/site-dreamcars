@@ -72,7 +72,7 @@
                         <img id="showImage" class="img-fluid" src="{{ asset('storage/' . $chauffeur->permis_de_conduire) }}" alt="Image Preview">
                     </div>
 
-                    <button type="submit" class="btn btn-primary me-2">Enregistrer</button>
+                    <button type="submit" class="btn btn-primary me-2">Mettre à jour</button>
                     <a href="{{ route('chauffeurs.index') }}" class="btn btn-secondary">Annuler</a>
                 </form>
             </div>

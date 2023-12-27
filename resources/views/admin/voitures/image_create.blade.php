@@ -36,8 +36,8 @@
                     </div>
 
 
-                    <button type="submit" class="btn btn-primary me-2">Submit</button>
-                    <button class="btn btn-secondary">Cancel</button>
+                    <button type="submit" class="btn btn-primary me-2">Enregistrer</button>
+                    <button class="btn btn-secondary">Annuler</button>
                 </form>
             </div>
         </div>

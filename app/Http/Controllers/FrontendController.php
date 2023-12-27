@@ -166,5 +166,22 @@ class FrontendController extends Controller
         return redirect()->back()->with('results', $results);
     }
 
+    public function ajouterAuPanier(Request $request)
+    {
+        $user = Auth::user();
+        $voitureId = $request->input('voiture_id');
+
+        // Logique pour créer une CarReservation et l'associer à l'utilisateur
+        $carReservation = new CarReservation([
+            'voiture_id' => $voitureId,
+            // Ajoutez d'autres champs ici
+        ]);
+
+        $user->carReservations()->save($carReservation);
+
+        return redirect()->route('panier.afficher')->with('success', 'Voiture ajoutée au panier');
+    }
+
+
 
 }

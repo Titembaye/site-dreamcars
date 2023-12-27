@@ -67,11 +67,15 @@ class VoitureController extends Controller
         $voiture->annee = $request->input('annee');
         $voiture->montant_journalier = $request->input('montant_journalier');
 
+        $notification=array(
+            'message'=>'Voiture ajouté avec succès, complétez ses images',
+            'alert-type'=>'success'
+        );
         // Enregistrer l'agence dans la base de données 
         $voiture->save();
 
         // Rediriger vers une page de confirmation ou de liste des agences
-        return redirect()->route('voitures.createimage')->with('success', 'L\'agence a été créée avec succès.');
+        return redirect()->route('voitures.createimage')->with($notification);
     }
 
     public function show(Voiture $voiture)

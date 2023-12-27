@@ -10,16 +10,17 @@
             <div class="card-body">
                 <h6 class="card-title">Liste des Missions</h6>
                 <div class="row justify-content between">
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <a class="btn btn-primary btn-sm" href="{{route('missions.create')}}">Ajouter</a>
                     </div>
                     
-                    <div class="col-md-6 text-right" style="text-align: right;">
-                        <div id="dataTableExample_filter" class="dataTables_filter">
-                            <label>
-                                <input type="search" class="form-control" placeholder="Search" aria-controls="dataTableExample">
-                            </label>
-                        </div>
+                    <div class="col-md-4 text-right" style="text-align: right;">
+                        <form action="{{ route('missions.index') }}" method="GET" class="search-form">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="query" placeholder="Rechercher...">
+                                <button type="submit" class="btn btn-primary btn-sm">Rechercher</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <div class="table-responsive" style="margin-top: 20px">

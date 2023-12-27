@@ -24,9 +24,12 @@
                             <i class="fab fa-instagram"></i> Instagram</a>
                         </li>
 
-                        <li><a href="https://instagram.com/dreamcarstogo?igshid=NXpqaDZkNnNkcTVy&utm_source=qr" style="color: #1f1f1f">
-                          <i class="fab fa-instagram"></i> Twiter </a>
+                        <li>
+                          <a href="https://twitter.com/votre_compte_twitter" style="color: #1f1f1f">
+                              <i class="fab fa-twitter"></i> Twitter
+                          </a>
                       </li>
+                      
                     </ul>
                 </div>
 

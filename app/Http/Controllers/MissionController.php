@@ -42,7 +42,10 @@ class MissionController extends Controller
             'voitures' => 'required|array',
             'chauffeurs' => 'required|array',
         ]);
-
+        $notification=array(
+            'message'=>'La mission ajouté avec succès',
+            'alert-type'=>'success'
+        );
         $mission = Mission::create($request->except('voitures', 'chauffeurs'));
 
         $voitures = Voiture::find($request->input('voitures'));
@@ -51,7 +54,7 @@ class MissionController extends Controller
         $mission->voitures()->attach($voitures);
         $mission->chauffeurs()->attach($chauffeurs);
 
-        return redirect()->route('missions.index')->with('success', 'Mission created successfully');
+        return redirect()->route('missions.index')->with($notification);
     }
 
 

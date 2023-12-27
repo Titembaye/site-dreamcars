@@ -13,12 +13,18 @@ return new class extends Migration
     {
         Schema::create('factures', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('reservation_id')->constrained('reservations');
-            $table->date('date_emission');
-            $table->decimal('montant', 10, 2);
-            $table->softDeletes();
+            $table->string('facture_id');
+            $table->string('reservation_id')->unique();
+            $table->string('nom')->unique();
+            $table->timestamp('date_emission');
             $table->timestamps();
-            });
+    
+            // Clé étrangère
+            $table->foreign('reservation_id')
+                  ->references('reservation_id')
+                  ->on('reservations')
+                  ->onDelete('cascade');
+        });
     }
 
     /**

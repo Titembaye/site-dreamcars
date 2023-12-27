@@ -86,8 +86,8 @@ DreamCars - Voitures
                             <img id="showImage" class="img-fluid" src="" alt="Image Preview">
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary me-2">Submit</button>
-                    <a href="{{route('voitures.index')}}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary me-2">Enregistrer</button>
+                    <a href="{{route('voitures.index')}}" class="btn btn-secondary">Annuler</a>
                 </form>
             </div>
         </div>

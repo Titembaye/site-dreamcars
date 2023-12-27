@@ -68,8 +68,8 @@
                         <img id="showImage" class="img-fluid" src="" alt="Image Preview">
                     </div>
 
-                    <button type="submit" class="btn btn-primary me-2">Submit</button>
-                    <button class="btn btn-secondary">Cancel</button>
+                    <button type="submit" class="btn btn-primary me-2">Enregistrer</button>
+                    <a href="{{route('chauffeurs.index')}}" class="btn btn-secondary">Annuler</a>
                 </form>
             </div>
         </div>
