@@ -145,39 +145,39 @@
     </script>
 
     <!-- Ajoutez cela à votre fichier blade principal, par exemple, resources/views/layouts/index.blade.php -->
-<script>
-  // Supposons que vous utilisez jQuery pour simplifier le code
-  $(document).ready(function() {
-      $('#search-form').submit(function(event) {
-          event.preventDefault();
+  <script>
+    // Supposons que vous utilisez jQuery pour simplifier le code
+    $(document).ready(function() {
+        $('#search-form').submit(function(event) {
+            event.preventDefault();
 
-          // Récupérez les valeurs des filtres
-          var query = $('input[name="query"]').val();
-          var brand = $('select[name="brand"]').val();
-          var model = $('select[name="model"]').val();
-          var power = $('select[name="power"]').val();
+            // Récupérez les valeurs des filtres
+            var query = $('input[name="query"]').val();
+            var brand = $('select[name="brand"]').val();
+            var model = $('select[name="model"]').val();
+            var power = $('select[name="power"]').val();
 
-          // Utilisez ces valeurs pour effectuer une requête AJAX
-          $.ajax({
-              url: '{{ route("search.index") }}',
-              type: 'GET',
-              data: {
-                  query: query,
-                  brand: brand,
-                  model: model,
-                  power: power
-              },
-              success: function(response) {
-                  // Mettez à jour la section des résultats avec la nouvelle réponse
-                  $('.search-results').html(response);
-              },
-              error: function(error) {
-                  console.error('Une erreur s\'est produite lors de la recherche.', error);
-              }
-          });
-      });
-  });
-</script>
+            // Utilisez ces valeurs pour effectuer une requête AJAX
+            $.ajax({
+                url: '{{ route("search.index") }}',
+                type: 'GET',
+                data: {
+                    query: query,
+                    brand: brand,
+                    model: model,
+                    power: power
+                },
+                success: function(response) {
+                    // Mettez à jour la section des résultats avec la nouvelle réponse
+                    $('.search-results').html(response);
+                },
+                error: function(error) {
+                    console.error('Une erreur s\'est produite lors de la recherche.', error);
+                }
+            });
+        });
+    });
+  </script>
 
   </body>
 </html>

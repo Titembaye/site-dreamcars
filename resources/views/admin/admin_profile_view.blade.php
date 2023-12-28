@@ -32,17 +32,7 @@
                         <label class="tx-11 fw-bolder mb-0 text-uppercase">Adress:</label>
                         <p class="text-muted">{{$profileData->adress }}</p>
                     </div>
-                    <div class="mt-3 d-flex social-links">
-                        <a href="javascript:;" class="btn btn-icon border btn-xs me-2">
-                        <i data-feather="github"></i>
-                        </a>
-                        <a href="javascript:;" class="btn btn-icon border btn-xs me-2">
-                        <i data-feather="twitter"></i>
-                        </a>
-                        <a href="javascript:;" class="btn btn-icon border btn-xs me-2">
-                        <i data-feather="instagram"></i>
-                        </a>
-                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -53,7 +43,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-title">Modifier le profile</h6>
-                        <form method="POST" action="{{route('admin.profile.store')}}"  class="forms-sample" enctype="multipart/forl-data">
+                        <form method="POST" action="{{route('admin.profile.store')}}"  class="forms-sample" enctype="multipart/form-data">
                         @csrf    
                         <div class="mb-3">
                                 <label for="exempleUserName1" class="form-label">Username</label>
@@ -103,7 +93,7 @@
             reader.onload=function(e){
                 $('#showImage').attr('src',e.target.result);
             }
-            reader.readAsDataUrl(e.target.files['0']);
+            reader.readAsDataURL(e.target.files['0']);
         });
     });
 </script>

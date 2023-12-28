@@ -77,28 +77,48 @@ class AdminController extends Controller
     }//endMethod
 
     public function adminProfileStore(Request $request){
-        $id=Auth::user()->id;
-        $data=User::find($id);
 
-        $data->username=$request->username;
-        $data->name=$request->name;
-        $data->email=$request->email;
-        $data->phone=$request->phone;
-        $data->adress=$request->address;
-        if($request->file('photo')){
-            $file=$request->file('photo');
-            @unlink(public_path('upload/admin_images/'.$data->photo));
-            $filename=date('YmHi').$file->getClientOriginalName();
-            $file->move(public_path('upload/admin_images'), $filename);
-            $data['photo']=$filename;
+
+        $request->validate([
+            'username' => 'required|string',
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'photo' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $id = Auth::user()->id;
+        $data = User::find($id);
+    
+        $data->username = $request->username;
+        $data->name = $request->name;
+        $data->email = $request->email;
+        $data->phone = $request->phone;
+        $data->adress = $request->address;
+        //$uploadPath = base_path('public/upload/admin_images');
+
+        if ($request->file('photo')) {
+            $file = $request->file('photo');
+            @unlink(public_path('upload/admin_images/' . $data->photo));
+            $filename = date('YmHi') . $file->getClientOriginalName();
+            if ($file->move(public_path('upload/admin_images'), $filename)) {
+                $data['photo'] = $filename;
+            } else {
+                // Gérer l'erreur de téléchargement
+                dd('Erreur lors du téléchargement du fichier.');
+            }
+            //$data->photo = $filename;
         }
+    
         $data->save();
-        $notification=array(
-            'message'=>'Profile modifié avec succès',
-            'alert-type'=>'success'
+    
+        $notification = array(
+            'message' => 'Profile modifié avec succès',
+            'alert-type' => 'success'
         );
+    
         return redirect()->back()->with($notification);
-    }//endMethod
+    }
+    
 
     
     public function adminChangePassword(){

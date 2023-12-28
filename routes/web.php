@@ -9,21 +9,10 @@ use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PayerController;
 use App\Http\Controllers\FactureController;
+use App\Http\Controllers\AgenceController;
 
 
 use App\Models\Reservation;
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
-
 
 
 Route::get('/dashboard', function () {
@@ -57,10 +46,9 @@ Route::middleware(['auth','role:admin'])->group(function(){
     Route::put('/voitures/{id}/imageupdate', [App\Http\Controllers\VoitureController::class, 'imageupdate'])->name('voitures.imageupdate');
 
     Route::get('/voitures/search', [App\Http\Controllers\VoitureController::class, 'index'])->name('voitures.search');
-
-
+    
+    //Routes pour gestion des utilisateurs
     Route::get('/admin/login', [AdminController::class, 'adminLogin'])->name('admin.login');
-   
     Route::get('/users', [AdminController::class, 'index'])->name('users.index');
     Route::get('/users/create', [AdminController::class, 'create_user'])->name('users.create');
     Route::get('/users/{user}', [AdminController::class, 'show'])->name('users.show'); // Afficher les détails d'un utilisateur
@@ -68,31 +56,59 @@ Route::middleware(['auth','role:admin'])->group(function(){
     Route::delete('/users/{user}', [AdminController::class, 'destroy'])->name('users.destroy'); // Supprimer un utilisateur
     Route::post('/users', [AdminController::class, 'store'])->name('users.store');
     Route::put('/users/{user}', [AdminController::class, 'update'])->name('users.update');
+
+    //routes pour AgenceController
+    Route::get('agences', 'App\Http\Controllers\AgenceController@index')->name('agences.index');
+    Route::get('agences/{agence}', 'App\Http\Controllers\AgenceController@show')->name('agences.show');
+    Route::get('agences/create', 'App\Http\Controllers\AgenceController@create')->name('agences.create');
+    Route::post('agences', 'App\Http\Controllers\AgenceController@store')->name('agences.store');
+    Route::get('agences/{agence}/edit', 'App\Http\Controllers\AgenceController@edit')->name('agences.edit');
+    Route::put('agences/{agence}', 'App\Http\Controllers\AgenceController@update')->name('agences.update');
+    Route::delete('agences/{agence}', 'App\Http\Controllers\AgenceController@destroy')->name('agences.destroy');
+    Route::get('messagesList', 'App\Http\Controllers\AgenceController@messageList')->name('messagesList');
+    Route::get('messages/{message}', 'App\Http\Controllers\AgenceController@messageShow')->name('messages.show');
+    Route::delete('messages/{message}', 'App\Http\Controllers\AgenceController@destroyMessage')->name('messages.destroy');
+
+
+    Route::resource('chauffeurs', 'App\Http\Controllers\ChauffeurController');
+
+    //Route::resource('agences', 'App\Http\Controllers\AgenceController');
+    Route::resource('disponibilites', 'App\Http\Controllers\DisponibiliteVoitureController');
+    Route::resource('missions', 'App\Http\Controllers\MissionController');
+    Route::resource('voitures', 'App\Http\Controllers\VoitureController');
+    Route::resource('factures', 'App\Http\Controllers\FactureController')->parameters([
+        'factures' => 'facture', // utilisé 'facture' au lieu de 'facture_id'
+    ])->where([
+        'facture' => '[A-Za-z0-9]+', // contrainte pour accepter uniquement les caractères alphanumériques
+    ]);
+    Route::get('/generer-facture', [App\Http\Controllers\FactureController::class, 'genererFacture']);
+    Route::get('/search-reservations', 'App\Http\Controllers\FactureController@searchReservations')->name('search.reservations');
+
 });
 
 
 
 
 
-Route::resource('chauffeurs', 'App\Http\Controllers\ChauffeurController');
+//Route::resource('chauffeurs', 'App\Http\Controllers\ChauffeurController');
 
-Route::resource('agences', 'App\Http\Controllers\AgenceController');
-Route::resource('disponibilites', 'App\Http\Controllers\DisponibiliteVoitureController');
-Route::resource('missions', 'App\Http\Controllers\MissionController');
-Route::resource('voitures', 'App\Http\Controllers\VoitureController');
-Route::resource('factures', 'App\Http\Controllers\FactureController')->parameters([
-    'factures' => 'facture', // utilisé 'facture' au lieu de 'facture_id'
-])->where([
-    'facture' => '[A-Za-z0-9]+', // contrainte pour accepter uniquement les caractères alphanumériques
-]);
-Route::get('/generer-facture', [App\Http\Controllers\FactureController::class, 'genererFacture']);
-Route::get('/search-reservations', 'App\Http\Controllers\FactureController@searchReservations')->name('search.reservations');
+//Route::resource('agences', 'App\Http\Controllers\AgenceController');
+//Route::resource('disponibilites', 'App\Http\Controllers\DisponibiliteVoitureController');
+//Route::resource('missions', 'App\Http\Controllers\MissionController');
+//Route::resource('voitures', 'App\Http\Controllers\VoitureController');
+//Route::resource('factures', 'App\Http\Controllers\FactureController')->parameters([
+//    'factures' => 'facture', // utilisé 'facture' au lieu de 'facture_id'
+//])->where([
+//    'facture' => '[A-Za-z0-9]+', // contrainte pour accepter uniquement les caractères alphanumériques
+//]);
+//Route::get('/generer-facture', [App\Http\Controllers\FactureController::class, 'genererFacture']);
+//Route::get('/search-reservations', 'App\Http\Controllers\FactureController@searchReservations')->name('search.reservations');
 
 
 
 Route::middleware(['auth'])->group(function(){
-Route::resource('reservations', 'App\Http\Controllers\ReservationController');
-Route::post('/reservations/store_reseravtion', [App\Http\Controllers\ReservationController::class, 'reservation_store'])->name('reservations.reservation_store');
+    Route::resource('reservations', 'App\Http\Controllers\ReservationController');
+    Route::post('/reservations/store_reseravation', [App\Http\Controllers\ReservationController::class, 'reservation_store'])->name('reservations.reservation_store');
     
 });
 

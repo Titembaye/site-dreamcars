@@ -112,6 +112,20 @@
                   </ul>
               </div>
           </li>
+          <li class="nav-item" id="gestionMessages">
+            <a class="nav-link" data-bs-toggle="collapse" href="#gestionMessagesSubMenu" role="button" aria-expanded="false" aria-controls="gestionMessagesSubMenu">
+                <i class="link-icon" data-feather="mail"></i>
+                <span class="link-title">Messages</span>
+                <i class="link-arrow" data-feather="chevron-down"></i>
+            </a>
+            <div class="collapse" id="gestionMessagesSubMenu">
+                <ul class="nav sub-menu">
+                    <li class="nav-item">
+                        <a href="{{route('messagesList')}}" class="nav-link">Liste des chauffeurs</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
       </ul>
   </div>
 </nav>

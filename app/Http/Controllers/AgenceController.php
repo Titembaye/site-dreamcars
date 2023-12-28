@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 
 use App\Models\Agence;
+use App\Models\Message;
 
 class AgenceController extends Controller
 {
@@ -88,10 +89,43 @@ class AgenceController extends Controller
         $agence = Agence::findOrFail($id);
         $agence->delete();
         $notification=array(
-            'message'=>'Agence mis à jour avec succès',
+            'message'=>'Agence supprimé avec succès',
             'alert-type'=>'success'
         );
     
         return redirect()->route('agences.index')->with('success', $notification );
     }
+
+    public function messageList(){
+        $messages = Message::latest()->paginate(10);
+        return view('admin.agences.messagesList', compact('messages'));
+    }
+    
+    public function messageShow($id){
+        $message = Message::find($id);
+        return view('admin.agences.messageShow', compact('message'));
+    }
+
+    // AgenceController.php
+
+    public function destroyMessage($id)
+    {
+        // Logique pour supprimer le message avec l'ID donné
+        $message = Message::find($id);
+
+        if (!$message) {
+            // Gérer le cas où le message n'est pas trouvé
+            return redirect()->route('messages.index')->with('error', 'Message not found');
+        }
+
+        $message->delete();
+
+        $notification=array(
+            'message'=>'Message supprimé avec succès',
+            'alert-type'=>'success'
+        );
+        // Rediriger avec un message de succès
+        return redirect()->route('messages.index')->with($notification);
+    }
+
 }
