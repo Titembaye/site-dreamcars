@@ -37,16 +37,6 @@ Route::middleware(['auth','role:admin'])->group(function(){
     Route::get('/admin/change/password', [AdminController::class, 'adminChangePassword'])->name('admin.change.password');
     Route::post('/admin/update/password', [AdminController::class, 'adminUpdatePassword'])->name('admin.update.password');
 
-    Route::get('/reservations/mesreservations', [App\Http\Controllers\ReservationController::class, 'userReservations'])->name('user_reservations');
-
-
-    Route::get('/voitures/image_create',[App\Http\Controllers\VoitureController::class, 'createimage'])->name('voitures.createimage');
-    Route::post('/voitures/image_store',[App\Http\Controllers\VoitureController::class, 'imagestore'])->name('voitures.imagestore');
-    Route::get('/voitures/{id}/editimage', [App\Http\Controllers\VoitureController::class, 'editimage'])->name('voitures.editimage');
-    Route::put('/voitures/{id}/imageupdate', [App\Http\Controllers\VoitureController::class, 'imageupdate'])->name('voitures.imageupdate');
-
-    Route::get('/voitures/search', [App\Http\Controllers\VoitureController::class, 'index'])->name('voitures.search');
-    
     //Routes pour gestion des utilisateurs
     Route::get('/admin/login', [AdminController::class, 'adminLogin'])->name('admin.login');
     Route::get('/users', [AdminController::class, 'index'])->name('users.index');
@@ -57,7 +47,24 @@ Route::middleware(['auth','role:admin'])->group(function(){
     Route::post('/users', [AdminController::class, 'store'])->name('users.store');
     Route::put('/users/{user}', [AdminController::class, 'update'])->name('users.update');
 
-    //routes pour AgenceController
+    //Routes pour gestion des voitures
+    Route::resource('voitures', 'App\Http\Controllers\VoitureController');
+    Route::get('/voitures/image_create',[App\Http\Controllers\VoitureController::class, 'createimage'])->name('voitures.createimage');
+    Route::post('/voitures/image_store',[App\Http\Controllers\VoitureController::class, 'imagestore'])->name('voitures.imagestore');
+    Route::get('/voitures/{id}/editimage', [App\Http\Controllers\VoitureController::class, 'editimage'])->name('voitures.editimage');
+    Route::put('/voitures/{id}/imageupdate', [App\Http\Controllers\VoitureController::class, 'imageupdate'])->name('voitures.imageupdate');
+    Route::get('/voitures/search', [App\Http\Controllers\VoitureController::class, 'index'])->name('voitures.search');
+    Route::resource('disponibilites', 'App\Http\Controllers\DisponibiliteVoitureController');
+    
+    //gestion des chauffeurs
+    Route::resource('chauffeurs', 'App\Http\Controllers\ChauffeurController');
+
+    //Gestion des reservations
+    Route::resource('reservations', 'App\Http\Controllers\ReservationController');
+    Route::get('/reservations/mesreservations', [App\Http\Controllers\ReservationController::class, 'userReservations'])->name('user_reservations');
+    Route::get('/search-reservations', 'App\Http\Controllers\FactureController@searchReservations')->name('search.reservations');
+    
+    //routes pour AgenceController et gestion des messages
     Route::get('agences', 'App\Http\Controllers\AgenceController@index')->name('agences.index');
     Route::get('agences/{agence}', 'App\Http\Controllers\AgenceController@show')->name('agences.show');
     Route::get('agences/create', 'App\Http\Controllers\AgenceController@create')->name('agences.create');
@@ -69,50 +76,25 @@ Route::middleware(['auth','role:admin'])->group(function(){
     Route::get('messages/{message}', 'App\Http\Controllers\AgenceController@messageShow')->name('messages.show');
     Route::delete('messages/{message}', 'App\Http\Controllers\AgenceController@destroyMessage')->name('messages.destroy');
 
-
-    Route::resource('chauffeurs', 'App\Http\Controllers\ChauffeurController');
-
-    //Route::resource('agences', 'App\Http\Controllers\AgenceController');
-    Route::resource('disponibilites', 'App\Http\Controllers\DisponibiliteVoitureController');
-    Route::resource('missions', 'App\Http\Controllers\MissionController');
-    Route::resource('voitures', 'App\Http\Controllers\VoitureController');
+    //Gestion des factures
+    Route::get('/factures/{facture}/pdf', 'App\Http\Controllers\FactureController@generatePDF')->name('factures.pdf');
     Route::resource('factures', 'App\Http\Controllers\FactureController')->parameters([
-        'factures' => 'facture', // utilisé 'facture' au lieu de 'facture_id'
+        'factures' => 'facture', 
     ])->where([
-        'facture' => '[A-Za-z0-9]+', // contrainte pour accepter uniquement les caractères alphanumériques
+        'facture' => '[A-Za-z0-9]+',
     ]);
     Route::get('/generer-facture', [App\Http\Controllers\FactureController::class, 'genererFacture']);
-    Route::get('/search-reservations', 'App\Http\Controllers\FactureController@searchReservations')->name('search.reservations');
-
-});
-
-
-
-
-
-//Route::resource('chauffeurs', 'App\Http\Controllers\ChauffeurController');
-
-//Route::resource('agences', 'App\Http\Controllers\AgenceController');
-//Route::resource('disponibilites', 'App\Http\Controllers\DisponibiliteVoitureController');
-//Route::resource('missions', 'App\Http\Controllers\MissionController');
-//Route::resource('voitures', 'App\Http\Controllers\VoitureController');
-//Route::resource('factures', 'App\Http\Controllers\FactureController')->parameters([
-//    'factures' => 'facture', // utilisé 'facture' au lieu de 'facture_id'
-//])->where([
-//    'facture' => '[A-Za-z0-9]+', // contrainte pour accepter uniquement les caractères alphanumériques
-//]);
-//Route::get('/generer-facture', [App\Http\Controllers\FactureController::class, 'genererFacture']);
-//Route::get('/search-reservations', 'App\Http\Controllers\FactureController@searchReservations')->name('search.reservations');
-
-
-
-Route::middleware(['auth'])->group(function(){
-    Route::resource('reservations', 'App\Http\Controllers\ReservationController');
-    Route::post('/reservations/store_reseravation', [App\Http\Controllers\ReservationController::class, 'reservation_store'])->name('reservations.reservation_store');
+    
+    //Gestion des missions
+    Route::resource('missions', 'App\Http\Controllers\MissionController');
     
 });
 
-
+Route::middleware(['auth'])->group(function(){
+    
+    Route::post('/reservations/store_reseravation', [App\Http\Controllers\ReservationController::class, 'reservation_store'])->name('reservations.reservation_store');
+    
+});
 
 
 Route::get('/', [FrontendController::class,'accueil'])->name('accueil');
@@ -141,8 +123,12 @@ Route::get('/contact', function() {
 
 Route::get('/reservation-success', [FrontendController::class, 'showReservationSuccess'])->name('frontend.reservation_success');
 Route::get('/reservation-abort', [FrontendController::class, 'showReservationAbort'])->name('frontend.reservation_abort');
-Route::get('/factures/{facture}/pdf', 'App\Http\Controllers\FactureController@generatePDF')->name('factures.pdf');
 
+
+Route::get('/paiement', [\App\Http\Controllers\CinetPayController::class, 'index']);
+Route::post('/paiement', [\App\Http\Controllers\CinetPayController::class, 'Payment']);
+Route::match(['get','post'],'/notify_url', [\App\Http\Controllers\CinetPayController::class, 'notify_url'])->name('notify_url');
+Route::match(['get','post'],'/return_url', [\App\Http\Controllers\CinetPayController::class, 'return_url'])->name('return_url');
 
 
 
@@ -154,8 +140,3 @@ Route::get('/factures/{facture}/pdf', 'App\Http\Controllers\FactureController@ge
 //Route::get('/paiement', [PayerController::class,'index'])->name('paiement');
 //Route::post('/orange', [PayerController::class,'orange'])->name('store_paiement');
 //Route::post('/retour-paiement', 'CinetPayController@handlePaymentCallback');
-
-Route::get('/paiement', [\App\Http\Controllers\CinetPayController::class, 'index']);
-Route::post('/paiement', [\App\Http\Controllers\CinetPayController::class, 'Payment']);
-Route::match(['get','post'],'/notify_url', [\App\Http\Controllers\CinetPayController::class, 'notify_url'])->name('notify_url');
-Route::match(['get','post'],'/return_url', [\App\Http\Controllers\CinetPayController::class, 'return_url'])->name('return_url');
